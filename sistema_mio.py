@@ -1,7 +1,5 @@
 import heapq
 
-# 1. BASE DE CONOCIMIENTO (Conexiones reales del MIO de Cali)
-# Formato: { 'Estación_Origen': [('Estación_Destino', Tiempo_Estimado_Min, 'Ruta_Bus')], ... }
 SISTEMA_MIO = {
     'Terminal Menga': [
         ('Estación Alamos', 6, 'E21'), 
@@ -36,8 +34,8 @@ SISTEMA_MIO = {
     ]
 }
 
-# 2. HEURÍSTICA (Estimación de tiempo en línea recta hacia el destino final: 'Terminal Universidades')
-# Representa el conocimiento geográfico aproximado del norte al sur de Cali
+# 2. HEURÍSTICA 
+
 HEURISTICA_HACIA_UNIVERSIDADES = {
     'Terminal Menga': 35,
     'Estación Alamos': 30,
@@ -48,10 +46,9 @@ HEURISTICA_HACIA_UNIVERSIDADES = {
     'Terminal Universidades': 0
 }
 
-# 3. MOTOR DE INFERENCIA (Algoritmo de Búsqueda A*)
+# 3. MOTOR DE INFERENCIA 
 def buscar_ruta_mio(sistema, inicio, destino, heuristica):
     cola_prioridad = []
-    # Guardamos: (f_total, g_real, nodo_actual, ruta_recorrida)
     heapq.heappush(cola_prioridad, (heuristica.get(inicio, 0), 0, inicio, [(inicio, 'Inicio')]))
     
     costos_visitados = {inicio: 0}
@@ -85,20 +82,16 @@ ruta_optima, tiempo_total = buscar_ruta_mio(SISTEMA_MIO, origen, destino, HEURIS
 
 # Presentación de resultados
 if ruta_optima:
-    print("====================================================")
-    print(" 🤖 SISTEMA DE INTELIGENCIA ARTIFICIAL - MIO CALI 🤖")
-    print("====================================================")
     print(f"Calculando la mejor ruta desde: {origen}")
     print(f"Destino solicitado: {destino}\n")
     
     for i, (estacion, bus) in enumerate(ruta_optima):
         if i == 0:
-            print(f"📍 [Inicio] Abordar en: {estacion}")
+            print(f"[Inicio] Abordar en: {estacion}")
         else:
-            print(f"   ➡️ Tomar ruta [{bus}] hasta 🚉 {estacion}")
+            print(f"Tomar ruta [{bus}] hasta {estacion}")
             
-    print("\n----------------------------------------------------")
-    print(f"⏱️ Tiempo total estimado de viaje: {tiempo_total} minutos.")
-    print("====================================================")
+    print(f"Tiempo total estimado de viaje: {tiempo_total} minutos.")
+
 else:
-    print("❌ Lo sentimos, no se pudo consolidar una ruta con las reglas vigentes.")
+    print("Lo sentimos, no se pudo consolidar una ruta con las reglas vigentes.")
